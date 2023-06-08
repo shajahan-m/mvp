@@ -1,4 +1,4 @@
-package com.mvp.v1.controller;
+package com.mvp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,7 +39,7 @@ public class BlogController {
 	 * @apiNote api for creating blog post.
 	 * @return response output object.
 	 */
-	@PostMapping("/create-post")
+	@PostMapping("/post")
 	@Operation(summary = "Create blog post", description = "Api for creating blog post")
 	public ResponseEntity<ResponseOutput> createPost(@RequestBody AddPostInput addPostInput ){
 		return new ResponseEntity<ResponseOutput>(postService.addPost(addPostInput), HttpStatus.OK);
@@ -48,7 +49,7 @@ public class BlogController {
 	 * @apiNote api for editing blog post.
 	 * @return response output object.
 	 */
-	@PostMapping("/edit-post")
+	@PutMapping("/post")
 	@Operation(summary = "Edit blog post" ,description = "Api for editing blog post")
 	public ResponseEntity<ResponseOutput> editPost(@RequestBody EditPostInput editPostInput){
 		return new ResponseEntity<ResponseOutput>(postService.editPost(editPostInput), HttpStatus.OK);
