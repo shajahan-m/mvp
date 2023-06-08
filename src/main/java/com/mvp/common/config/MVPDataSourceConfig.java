@@ -3,6 +3,7 @@ package com.mvp.common.config;
 
 import javax.sql.DataSource;
 
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
@@ -66,6 +67,20 @@ public class MVPDataSourceConfig {
 	public PlatformTransactionManager transactionManager(
 			@Qualifier("mvpEntityManagerFactory") EntityManagerFactory entityManagerFactory) {
 		return new JpaTransactionManager(entityManagerFactory);
+	}
+	
+	/**
+	 * this method for flyway db migration.
+	 * @param datasource object.
+	 * @return flyway object.
+	 */
+	@Bean(initMethod = "migrate")
+	public Flyway flyway(@Qualifier("mvpDataSource") DataSource dataSource) {
+	    Flyway flyway = Flyway.configure()
+	            .baselineOnMigrate(true)
+	            .dataSource(dataSource)
+	            .load();
+	    return flyway;
 	}
 
 }
