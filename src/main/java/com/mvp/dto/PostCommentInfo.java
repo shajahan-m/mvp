@@ -1,5 +1,6 @@
 package com.mvp.dto;
 
+import com.mvp.common.entity.User;
 
 import lombok.Data;
 /**
