@@ -3,7 +3,6 @@ package com.mvp.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.mvp.common.dao.PostDao;
@@ -22,6 +21,7 @@ import com.mvp.utils.DateUtils;
 
 /**
  * service class for blog post.
+ * 
  * @author techversant
  * @version 1.0
  * @since 2023
@@ -37,12 +37,13 @@ public class PostService {
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private PostDao postDao;
 
 	/**
 	 * this method for adding post.
+	 * 
 	 * @param addpostinput object.
 	 * @return response output object.
 	 */
@@ -72,18 +73,15 @@ public class PostService {
 		post.setCreatedDateTime(DateUtils.getCurrentDateWithTime());
 		post.setLastUpdatedDateTime(DateUtils.getCurrentDateWithTime());
 		post.setStatus(Enums.PostStatus.DRAFT.ordinal());
-		if (postRepository.save(post) != null) {
-			responseOutput.setErrorCode(ErrorCodes.SUCCESS);
-			responseOutput.setErrorMessage("Successfully post created");
-		} else {
-			responseOutput.setErrorCode(ErrorCodes.INSERT_FAILED);
-			responseOutput.setErrorMessage("Sorry, could not create post");
-		}
+		postRepository.save(post);
+		responseOutput.setErrorCode(ErrorCodes.SUCCESS);
+		responseOutput.setErrorMessage("Successfully post created");
 		return responseOutput;
 	}
 
 	/**
 	 * this method for editing post.
+	 * 
 	 * @param editpostinput object.
 	 * @return response output object.
 	 */
@@ -117,13 +115,10 @@ public class PostService {
 			post.setTags(editPostInput.getTags());
 			post.setSlug(editPostInput.getSlug());
 			post.setLastUpdatedDateTime(DateUtils.getCurrentDateWithTime());
-			if (postRepository.save(post) != null) {
-				responseOutput.setErrorCode(ErrorCodes.SUCCESS);
-				responseOutput.setErrorMessage("Successfully post updated");
-			} else {
-				responseOutput.setErrorCode(ErrorCodes.UPDATE_FAILED);
-				responseOutput.setErrorMessage("Sorry, could update post");
-			}
+			postRepository.save(post);
+			responseOutput.setErrorCode(ErrorCodes.SUCCESS);
+			responseOutput.setErrorMessage("Successfully post updated");
+
 		} else {
 			responseOutput.setErrorCode(ErrorCodes.INVALID);
 			responseOutput.setErrorMessage("Post id missing");
@@ -134,6 +129,7 @@ public class PostService {
 
 	/**
 	 * this method for deleting post.
+	 * 
 	 * @param post id.
 	 * @return response output object.
 	 */
@@ -152,12 +148,12 @@ public class PostService {
 
 	/**
 	 * this method for getting post list.
+	 * 
 	 * @return post list output object.
 	 */
 	public PostListOutput getPostList() {
 		PostListOutput postListOutput = new PostListOutput();
 		List<PostInfo> postInfoList = postDao.findAllPostWithComments();
-		//List<Post> postList = postRepository.findAll(Sort.by("publishedDate").descending());
 		if (!postInfoList.isEmpty()) {
 			postListOutput.setErrorCode(ErrorCodes.SUCCESS);
 			postListOutput.setErrorMessage("Success");
